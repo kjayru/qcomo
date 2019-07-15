@@ -55,12 +55,3 @@ h1.login-head {
     transition: .5s;
 }
 
-.paginate_button {
-    display: inline-block;
-    background: gainsboro;
-    padding: 8px 21px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    color: #000;
-}
