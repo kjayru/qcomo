@@ -8,6 +8,10 @@ use App\Franchise;
 use App\Personal;
 use App\Order;
 use App\Category;
+use App\Client;
+use App\Comment;
+use App\Advertisement;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -22,15 +26,44 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $franquicias = Franchise::take(5)->get();
-        //$personas = Personal::take(5)->get();
-        $personas='';
-        //$pedidos = Order::take(5)->get();
-        $pedidos = '';
-        $productos = Category::take(5)->get();
 
+        $user_id = Auth::id();  
+      
+       $role = auth()->user()->roles[0]->slug;
+
+        switch (auth()->user()->roles[0]->slug) {
+            case 'admin':
+                $franquicias = Franchise::orderBy('id','desc')->take(5)->get();
+                $personas = null;      
+                $pedidos = null;
+                $locales = Client::orderBy('id','desc')->take(5)->get();
+               
+                $comments = Comment::orderBy('id','desc')->take(5)->get();
+                $publishings = Advertisement::orderBy('id','desc')->take(5)->get();
+                $productos = Category::take(5)->get();
+            break;
+            case 'franquicia':
+                $franquicias = null;
+                $personas = null;      
+                $pedidos = null;
+                $franchise = Franchise::where('user_id',$user_id)->first();
+              
+                $locales = Client::orderBy('id','desc')->where('franchise_id',$franchise->id)->take(5)->get();
+                
+                $comments = null;
+                $publishings = null;
+                $productos = Category::take(5)->get();
+               
+                break;
+            case 'mozo':
+                
+                break;
+        }
+
+        
+        
        
-        return view('admin.paginas.dashboard.index',['franquicias'=>$franquicias,'personas'=>$personas,'pedidos'=>$pedidos,'productos'=>$productos]);
+        return view('admin.paginas.dashboard.index',['publishings'=>$publishings,'comments'=>$comments,'role'=>$role,'clients'=>$locales,'franquicias'=>$franquicias,'personas'=>$personas,'pedidos'=>$pedidos,'productos'=>$productos]);
     }
 
     /**
