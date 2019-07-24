@@ -55,9 +55,9 @@ class DashboardController extends Controller
                 $franquicias = null;
                 $personas = null;      
                 $pedidos = null;
-                $franchise = Franchise::where('user_id',$user_id)->first();
+                $franchise = null;
               
-                $locales = Client::orderBy('id','desc')->where('franchise_id',$franchise->id)->take(5)->get();
+                $locales =null;
                 
                 $comments = null;
                 $publishings = null;
