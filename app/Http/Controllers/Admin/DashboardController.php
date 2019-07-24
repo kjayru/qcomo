@@ -32,8 +32,9 @@ class DashboardController extends Controller
         $pedidos = null;
         $comments = null;
         $publishings = null;
-        $locales =null;
-
+        $locales = null;
+        $productos = null;
+        
         $user_id = Auth::id();  
       
        $role = auth()->user()->roles[0]->slug;
