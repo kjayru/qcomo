@@ -34,7 +34,7 @@ class DashboardController extends Controller
         $publishings = null;
         $locales = null;
         $productos = null;
-        
+
         $user_id = Auth::id();  
       
        $role = auth()->user()->roles[0]->slug;
@@ -51,7 +51,7 @@ class DashboardController extends Controller
                 $productos = Category::take(5)->get();
             break;
             case 'franquicia':
-            dd("aqui");
+            
                 $franquicias = null;
                 $personas = null;      
                 $pedidos = null;
