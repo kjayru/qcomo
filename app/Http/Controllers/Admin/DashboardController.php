@@ -43,6 +43,7 @@ class DashboardController extends Controller
                 $productos = Category::take(5)->get();
             break;
             case 'franquicia':
+            dd("aqui");
                 $franquicias = null;
                 $personas = null;      
                 $pedidos = null;
