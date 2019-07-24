@@ -34,7 +34,7 @@ class DashboardController extends Controller
         $publishings = null;
         $locales = null;
         $productos = null;
-
+        
         $user_id = Auth::id();  
       
        $role = auth()->user()->roles[0]->slug;
@@ -55,9 +55,9 @@ class DashboardController extends Controller
                 $franquicias = null;
                 $personas = null;      
                 $pedidos = null;
-                $franchise = null;
+                $franchise = Franchise::where('user_id',$user_id)->first();
               
-                $locales =null;
+                $locales = Client::orderBy('id','desc')->where('franchise_id',$franchise->id)->take(5)->get();
                 
                 $comments = null;
                 $publishings = null;
@@ -81,9 +81,9 @@ class DashboardController extends Controller
                 $franquicias = null;
                 $personas = null;      
                 $pedidos = null;
-                $franchise = Franchise::where('user_id',$user_id)->first();
-              
-                $locales = Client::orderBy('id','desc')->where('franchise_id',$franchise->id)->take(5)->get();
+                $franchise = null;
+            
+                $locales = null;
                 
                 $comments = null;
                 $publishings = null;
@@ -94,9 +94,9 @@ class DashboardController extends Controller
                 $franquicias = null;
                 $personas = null;      
                 $pedidos = null;
-                $franchise = Franchise::where('user_id',$user_id)->first();
+                $franchise = null;
             
-                $locales = Client::orderBy('id','desc')->where('franchise_id',$franchise->id)->take(5)->get();
+                $locales = null;
                 
                 $comments = null;
                 $publishings = null;
