@@ -30,7 +30,7 @@ class DashboardController extends Controller
         $user_id = Auth::id();  
       
        $role = auth()->user()->roles[0]->slug;
-
+        dd(auth()->user()->roles[0]->slug);
         switch (auth()->user()->roles[0]->slug) {
             case 'admin':
                 $franquicias = Franchise::orderBy('id','desc')->take(5)->get();
