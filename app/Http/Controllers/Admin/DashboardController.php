@@ -27,6 +27,12 @@ class DashboardController extends Controller
     public function index()
     {
 
+        $franquicias = null;
+        $personas = null;      
+        $pedidos = null;
+        $comments = null;
+        $publishings = null;
+        
         $user_id = Auth::id();  
       
        $role = auth()->user()->roles[0]->slug;
