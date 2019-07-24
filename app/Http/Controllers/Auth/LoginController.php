@@ -36,16 +36,22 @@ class LoginController extends Controller
     {
         
         switch ($user->roles[0]->slug) {
-            case 'usuario':
-                return redirect('/');
-                break;
-            case 'contenido':
-                return redirect('/admin');
-                break;
-           
             case 'admin':
                 return redirect('/admin');
                 break;
+            case 'franquicia':
+                return redirect('/admin');
+                break;
+           
+            case 'local':
+                return redirect('/admin');
+            break;
+            case 'mozo':
+                return redirect('/admin');
+            break;
+            case 'caja':
+                return redirect('/admin');
+            break;
         }
 
     }

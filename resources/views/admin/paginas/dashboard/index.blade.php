@@ -50,6 +50,15 @@
                 @if($role=='franquicia')
                     @include('layouts.partials.dashfranquicia')
                 @endif
+                @if($role=='local')
+                    @include('layouts.partials.dashlocal')
+                @endif
+                @if($role=='caja')
+                @include('layouts.partials.dashcaja')
+                @endif
+                @if($role=='mozo')
+                @include('layouts.partials.dashmozo')
+                @endif
             </div>
     
         </div>

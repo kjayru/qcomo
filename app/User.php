@@ -53,18 +53,9 @@ class User extends Authenticatable
         $this->attributes['email'] = strtolower($valor);
     }
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-
-    
-
 
     public function costumerdetail()
     {

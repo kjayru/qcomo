@@ -1084,3 +1084,8 @@ $("#fr-cliente-buscar").on('submit',function(e){
         }
     });
 });
+
+$(".user-menu a").on('click',function(e){
+    e.preventDefault();
+    $(this).parent().children(".dropdown-menu").show();
+});

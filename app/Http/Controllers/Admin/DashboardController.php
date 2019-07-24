@@ -54,10 +54,45 @@ class DashboardController extends Controller
                 $publishings = null;
                 $productos = Category::take(5)->get();
                
-                break;
-            case 'mozo':
+            break;
+            case 'local':
+                $franquicias = null;
+                $personas = null;      
+                $pedidos = null;
+                $franchise = null;
+              
+                $locales = null;
                 
-                break;
+                $comments = null;
+                $publishings = null;
+                $productos = Category::take(5)->get();
+               
+            break;
+            case 'caja':
+                $franquicias = null;
+                $personas = null;      
+                $pedidos = null;
+                $franchise = Franchise::where('user_id',$user_id)->first();
+              
+                $locales = Client::orderBy('id','desc')->where('franchise_id',$franchise->id)->take(5)->get();
+                
+                $comments = null;
+                $publishings = null;
+                $productos = Category::take(5)->get();
+               
+            break;
+            case 'mozo':
+                $franquicias = null;
+                $personas = null;      
+                $pedidos = null;
+                $franchise = Franchise::where('user_id',$user_id)->first();
+            
+                $locales = Client::orderBy('id','desc')->where('franchise_id',$franchise->id)->take(5)->get();
+                
+                $comments = null;
+                $publishings = null;
+                $productos = Category::take(5)->get(); 
+            break;
         }
 
         
