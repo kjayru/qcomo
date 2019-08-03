@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        MercadoPagoLaravel\Providers\MercadoPagoServiceProvider::class,
     ],
 
     /*
@@ -224,6 +225,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Shinobi'  => Caffeinated\Shinobi\Facades\Shinobi::class,
+        'MP' => MercadoPagoLaravel\Facades\MP::class,
 
     ],
 

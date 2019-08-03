@@ -5,7 +5,6 @@
     <div class="box-body">
             @csrf
             <input type="hidden" name="_method" id="metodo" value="POST">
-            
             <input type="hidden" name="client_id" id="client_id" value="{{@$client_id}}">
             <input type="hidden" name="product_id" id="product_id" >
             
@@ -61,6 +60,6 @@
 
         <div class="form-group"> 
                 <button type="submit" class="btn btn-primary">Guardar</button>
-            </div>
+        </div>
     
     </form>    
