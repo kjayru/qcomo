@@ -350,5 +350,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/sales/buscar/{init}/{final}/{idestado}/{idtipo}/{idmozo}/{idmediopago}','Admin\OrderController@buscar')->name('sales.buscar');
     Route::get('/sales/detalle/{idsale}','Admin\OrderController@detalle')->name('sales.detalle');
 
+    Route::get('/packages','Admin\PaquetesController@index');
+    Route::get('/packages/{id}/edit','Admin\PaquetesController@edit'); 
     Route::get('/package/{client_id}/{package_id}','Admin\PaquetesController@clientPackage')->name('package.update');
+    Route::put('/package/{classification}','Admin\PaquetesController@update')->name('packages.update')/*->middleware('permission:classifications.edit')*/; 
+    Route::post('/package/store','Admin\PaquetesController@store')->name('packages.store')/*->middleware('permission:classifications.create')*/; 
+
 });

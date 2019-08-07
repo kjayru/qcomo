@@ -1088,4 +1088,57 @@ $("#fr-cliente-buscar").on('submit',function(e){
 $(".user-menu a").on('click',function(e){
     e.preventDefault();
     $(this).parent().children(".dropdown-menu").show();
+}); 
+
+$(".btn-package-edit").click(function(e){
+    e.preventDefault();
+    let id = $(this).data('id');
+    fetch(`/admin/packages/${id}/edit`)
+    .then(res => res.json())
+    .then(data =>{
+        console.log(data ); 
+        $("#fr-paquete #id").val(data.id);
+        $('#fr-paquete input[name="_method"]').val('PUT');
+        $("#fr-paquete #name").val(data.name);
+        $("#fr-paquete #description").val(data.description);  
+        $("#fr-paquete #price").val(data.price);  
+        $("#fr-paquete #promo").val(data.promo);  
+        $("#fr-paquete #status").val(data.status);  
+        
+    });
+
 });
+
+$('#fr-paquete').on('submit', function (e) {
+    e.preventDefault()
+    var id = $('#fr-paquete #id').val(); 
+    var metodo = $('#fr-paquete #metodo').val();
+    let url ='';
+    if(metodo=='POST'){ 
+        url ='/admin/package/store';
+    }else{ 
+        url = '/admin/package/' + id;
+    }
+    console.log(new FormData(this));
+ 
+	$.ajaxSetup({ 
+	    headers: {'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')} 
+	});
+ 
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: new FormData(this),
+      contentType: false,
+      processData: false,
+      success: function (response) {
+          if(response.rpta=='ok'){
+            window.location.reload();
+          }
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    })
+})
+

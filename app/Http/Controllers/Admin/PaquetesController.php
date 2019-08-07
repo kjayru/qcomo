@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Client;
+use App\Package;
 
 class PaquetesController extends Controller
 {
@@ -19,7 +20,8 @@ class PaquetesController extends Controller
      */
     public function index()
     {
-        return view('admin.paginas.paquetes.index');
+        $packages = Package::all();
+        return view('admin.paginas.paquetes.index',['packages'=>$packages]);
     }
 
     /**
@@ -41,6 +43,16 @@ class PaquetesController extends Controller
     public function store(Request $request)
     {
         //
+        $paquetes = new Package();
+   
+        $paquetes->name = $request->name;
+        $paquetes->description = $request->decription; 
+        $paquetes->price = $request->price; 
+        $paquetes->promo = $request->promo; 
+        $paquetes->status = $request->status; 
+        $paquetes->save();
+
+        return response()->json(['rpta'=>'ok']);
     }
 
     /**
@@ -63,6 +75,8 @@ class PaquetesController extends Controller
     public function edit($id)
     {
         //
+        $paquetes = Package::find($id);
+        return response()->json($paquetes);
     }
 
     /**
@@ -75,6 +89,15 @@ class PaquetesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $paquetes = Package::find($id);
+        $paquetes->name = $request->name;
+        $paquetes->description = $request->decription; 
+        $paquetes->price = $request->price; 
+        $paquetes->promo = $request->promo; 
+        $paquetes->status = $request->status; 
+        $paquetes->save();
+
+        return response()->json(['rpta'=>'ok']);
     }
 
     /**

@@ -37,10 +37,10 @@
                             @foreach($clasificaciones as $key => $clas)
                             <tr>
                                 <td >{{ $key + 1 }}</td>
-                                <td>{{ $clas->name }} </td>
+                                <td>{{ $clas->name }}</td>
                                 <td>{{ $clas->decription }}</td>    
-                                <td class="pad-10"> <img src="/storage/{{ $clas->cover }}" class="img-responsive"> </td>
-                                <td>  
+                                <td class="pad-10"> <img src="/storage/{{ $clas->cover }}" class="img-responsive"></td>
+                                <td>
                                     <a href="#" class="btn btn-xs btn-primary btn-classification-edit" data-id="{{$clas->id}}">Editar</a> 
                                 </td>
                             </tr>

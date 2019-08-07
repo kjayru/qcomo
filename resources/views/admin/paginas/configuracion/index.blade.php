@@ -21,7 +21,7 @@
             <div class="box" id="opc_conf_div" onclick="onTiposComida()">  
                 <div class="box-body no-padding" > 
                     <img src="../images/list.png" width="65px" height="65px" style="margin-left: 65px; margin-top: 15px;" />
-                    <h4 style="margin-left: 0px;" align="center">TIPOS DE COMIDA</h4>
+                    <h4 style="margin-left: 0px;" align="center">CLASIFICACION DE RESTAURANTS</h4>
                 </div> 
             </div>
             
@@ -76,7 +76,7 @@
             
         </div>
         
-        <div class="col-md-2">
+        <!--div class="col-md-2">
             
             <div class="box" id="opc_conf_div" onclick="onCodigoWeb()">  
                 <div class="box-body no-padding" > 
@@ -85,9 +85,9 @@
                 </div> 
             </div>
             
-        </div>
+        </div-->
         
-        <div class="col-md-2">
+        <!--div class="col-md-2">
             
             <div class="box" id="opc_conf_div" onclick="onMetodoPago()()">  
                 <div class="box-body no-padding" > 
@@ -96,7 +96,7 @@
                 </div> 
             </div>
             
-        </div>
+        </div-->
         
         <div class="col-md-2">
             
@@ -109,7 +109,7 @@
             
         </div>
         
-        <div class="col-md-2">
+        <!--div class="col-md-2">
             
             <div class="box" id="opc_conf_div" onclick="onPaisProvincia()">  
                 <div class="box-body no-padding" > 
@@ -118,7 +118,7 @@
                 </div> 
             </div>
             
-        </div>
+        </div-->
         
         
     </div>
