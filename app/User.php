@@ -88,7 +88,7 @@ class User extends Authenticatable
 
     public function userClientAdmin()
     {
-        return $this->hasMany('App\Client');
+        return $this->hasMany('App\UserClientAdmin');
     }
     
 }

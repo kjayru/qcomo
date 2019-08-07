@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Client;
 
 class PaquetesController extends Controller
 {
@@ -86,4 +87,19 @@ class PaquetesController extends Controller
     {
         //
     }
+
+
+    /**
+     * El cliente actualiza su paquete
+     */
+    public function clientPackage($client_id, $package_id)
+    {
+        $client = Client::where('id',$client_id)->first();
+        $client->package_id = $package_id;
+        $client->save(); 
+         
+
+        return redirect('/admin/precios'); 
+    }
+
 }

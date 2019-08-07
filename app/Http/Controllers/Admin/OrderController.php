@@ -34,6 +34,11 @@ class OrderController extends Controller
         $user = User::where('id', $user_id)->first();
         $role = RoleUser::where('user_id', $user_id)->first();
 
+        if($role->id == 1){
+            $clients = Client::all();
+            return view('admin.paginas.pedidos.selectclient',['clients'=>$clients]);
+        } 
+
         $client = "";
         if($role->role_id == 5){
             $client = UserClientAdmin::where('user_id',$user_id)->first();
@@ -100,7 +105,7 @@ class OrderController extends Controller
             $item['usuario'] = $user;
             $out_enpreparacion_ventas[] = $item;
         }
-
+ 
         $out_enviados_ventas = [];
         foreach($enviados_ventas as $env){
             $item = $env;
@@ -128,11 +133,100 @@ class OrderController extends Controller
                                             'entregados_ventas'=>$out_entregados_ventas,
                                             'sales_state'=>$sales_state,
                                             'type_sales'=>$type_sales,
+                                            'name_client'=>$client->name,
                                             'mozos'=>$mozos,
                                             'rol'=>$role->role_id, 
                                             'clients'=>$franquisiados,
                                             'payment_methods'=>$payment_methods] );
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function client(Request $request)
+    { 
+        $client_id = $request->client_selecc;
+        $client = Client::where('id',$client_id)->first(); 
+        
+        $enpreparacion = Sale::where(['salestate_id'=>2, 'typesale_id'=>1, 'client_id'=>$client_id])->get();
+        $enviados = Sale::where(['salestate_id'=>5, 'typesale_id'=>1, 'client_id'=>$client_id])->get();
+        $entregados = Sale::where(['salestate_id'=>6, 'typesale_id'=>1, 'client_id'=>$client_id])->get();
+        $enpreparacion_ventas = Sale::where(['salestate_id'=>2, 'typesale_id'=>2, 'client_id'=>$client_id])->get();
+        $enviados_ventas = Sale::where(['salestate_id'=>5, 'typesale_id'=>2, 'client_id'=>$client_id])->get();
+        $entregados_ventas = Sale::where(['salestate_id'=>6, 'typesale_id'=>2, 'client_id'=>$client_id])->get();            
+        $mozos = Mozo::where('client_id',$client_id)->get();
+        $franquisiados = Client::all();
+        $franquisiados = [];
+        
+        $out_enpreparacion = [];
+        foreach($enpreparacion as $prep){
+            $item = $prep; 
+            $user = User::where('id',$prep->user_id)->first();
+            $item['usuario'] = $user;
+            $out_enpreparacion[] = $item;
+        }
+
+        $out_enviados = [];
+        foreach($enviados as $env){
+            $item = $env;
+            $user = User::where('id',$prep->user_id)->first();
+            $item['usuario'] = $user;
+            $out_enviados[] = $item;
+        }
+        
+        $out_entregados = [];
+        foreach($entregados as $ent){
+            $item = $ent;
+            $user = User::where('id',$prep->user_id)->first();
+            $item['usuario'] = $user;
+            $out_entregados[] = $item;
+        }
+ 
+        $out_enpreparacion_ventas = [];
+        foreach($enpreparacion_ventas as $prep){
+            $item = $prep; 
+            $user = User::where('id',$prep->user_id)->first();
+            $item['usuario'] = $user;
+            $out_enpreparacion_ventas[] = $item;
+        }
+ 
+        $out_enviados_ventas = [];
+        foreach($enviados_ventas as $env){
+            $item = $env;
+            $user = User::where('id',$prep->user_id)->first();
+            $item['usuario'] = $user;
+            $out_enviados_ventas[] = $item;
+        }
+        
+        $out_entregados_ventas = [];
+        foreach($entregados_ventas as $ent){
+            $item = $ent;
+            $user = User::where('id',$prep->user_id)->first();
+            $item['usuario'] = $user;
+            $out_entregados_ventas[] = $item;
+        }
+        $sales_state = SaleState::all();
+        $type_sales = TypeSale::all();
+        $payment_methods = PaymentMethod::all();
+
+        return view('admin.paginas.pedidos.index',['enpreparacion'=>$out_enpreparacion,
+                                            'enviados'=>$out_enviados,
+                                            'entregados'=>$out_entregados,
+                                            'enpreparacion_ventas'=>$out_enpreparacion_ventas,
+                                            'enviados_ventas'=>$out_enviados_ventas,
+                                            'entregados_ventas'=>$out_entregados_ventas,
+                                            'sales_state'=>$sales_state,
+                                            'type_sales'=>$type_sales,
+                                            'name_client'=>$client->name,
+                                            'mozos'=>$mozos,
+                                            'rol'=>0, 
+                                            'clients'=>$franquisiados,
+                                            'payment_methods'=>$payment_methods] );
+
+    }
+
 
     /**
      * Show the form for creating a new resource.

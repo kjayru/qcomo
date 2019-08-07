@@ -288,6 +288,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/clientes/{id}','Admin\ClientController@show');
     Route::get('/mesas','Admin\MesaController@index');
     Route::get('/pedidos','Admin\OrderController@index')->name('backend.pedidos');
+    Route::post('/pedidos/admin','Admin\OrderController@client')->name('backend.client');
 
     Route::post('/pedidos/buscar','Admin\OrderController@buscarPalabra')->name('backend.buscar');
 
@@ -315,6 +316,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/ayuda','Admin\AyudaController@index');
     Route::get('/configuraciones','Admin\ConfigurationController@index');
     Route::get('/precios','Admin\PreciosController@index');
+    Route::post('/precios','Admin\PreciosController@client');
+
     Route::get('/codigoweb','Admin\CodigoWebController@index');
     Route::get('/mail_sms','Admin\MailSMSController@index');
     Route::get('/paquetes','Admin\PaquetesController@index');
@@ -346,4 +349,6 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::get('/sales/buscar/{init}/{final}/{idestado}/{idtipo}/{idmozo}/{idmediopago}','Admin\OrderController@buscar')->name('sales.buscar');
     Route::get('/sales/detalle/{idsale}','Admin\OrderController@detalle')->name('sales.detalle');
+
+    Route::get('/package/{client_id}/{package_id}','Admin\PaquetesController@clientPackage')->name('package.update');
 });

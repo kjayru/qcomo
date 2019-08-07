@@ -3,25 +3,14 @@
 @section('content')
 
 <section class="content" style="padding-right: 0px; background-color: #f7f7f7; width:100%; padding: 0px;">
-
+ 
 <?php
-    if($rol==1){                
+    if( !empty($name_client)){
         echo '<div class="panel panel-default">';
-        echo '<div class="panel-heading">Seleccione un restaurante</div>';
-        echo '<div class="panel-body">';
-        echo '<div class="form-group">';
-        echo '<select id="restaurante_selecc" class="form-control">';
-        echo '<option>---- Restaurante -----</option>';
-        foreach ($clients as $client) {
-        echo '      <option value="'.$client->id.'">'.$client->name.'</option>';
-        }
-        echo '  </select>';
-        echo '</div> ';
-        echo '</div>';
+        echo    '<div class="panel-heading">'.$name_client.'</div>';
         echo '</div>';
     }
 ?>
-
 
 <div id="wrappermini" style="margin:5px;"> 
     <ul class="nav nav-tabs">
