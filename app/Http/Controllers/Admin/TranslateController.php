@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Traduccion;
 
 class TranslateController extends Controller
 {
@@ -18,7 +19,8 @@ class TranslateController extends Controller
      */
     public function index()
     {
-        return view('admin.paginas.traducciones.index');
+        $traducciones = Traduccion::all();   
+        return view('admin.paginas.traducciones.index',['traducciones'=>$traducciones ]);
     }
 
     /**
@@ -40,6 +42,12 @@ class TranslateController extends Controller
     public function store(Request $request)
     {
         //
+        $traduccion = new Traduccion();
+        $traduccion->nombre = $request->nombre;
+        $traduccion->traduccion = $request->traduccion; 
+        $traduccion->save();
+
+        return response()->json(['rpta'=>'ok']);
     }
 
     /**
@@ -62,6 +70,8 @@ class TranslateController extends Controller
     public function edit($id)
     {
         //
+        $traduccion = Traduccion::find($id); 
+        return response()->json($traduccion); 
     }
 
     /**
@@ -74,6 +84,12 @@ class TranslateController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $traduccion = Traduccion::find($id);
+        $traduccion->nombre = $request->nombre;
+        $traduccion->traduccion = $request->traduccion; 
+        $traduccion->save();
+
+        return response()->json(['rpta'=>'ok']);
     }
 
     /**

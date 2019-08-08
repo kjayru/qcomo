@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\ContactSystem;
 
 class MailSMSController extends Controller
 {
@@ -18,7 +19,24 @@ class MailSMSController extends Controller
      */
     public function index()
     {
-        return view('admin.paginas.mail_sms.index');
+        $contactos = ContactSystem::all();
+        $i = 0;
+        foreach( $contactos as $contacto ){
+            if( $i == 0 ){
+                $email = $contactos[0]->email;
+                $sms = $contactos[0]->sms;
+                $whatsapp = $contactos[0]->whatsapp;
+                $direccion = $contactos[0]->direccion;
+                $facebook = $contactos[0]->facebook;
+            }
+            $i = $i + 1;
+        }
+
+        return view('admin.paginas.mail_sms.index',['email'=>$email,
+                                                    'sms'=>$sms,
+                                                    'whatsapp'=>$whatsapp,
+                                                    'direccion'=>$direccion,
+                                                    'facebook'=>$facebook]);
     }
 
     /**
@@ -40,6 +58,15 @@ class MailSMSController extends Controller
     public function store(Request $request)
     {
         //
+        $contacto = new ContactSystem();
+        $contacto->email = $request->email;
+        $contacto->sms = $request->sms;
+        $contacto->whatsapp = $request->whatsapp;
+        $contacto->direccion = $request->direccion;
+        $contacto->facebook = $request->facebook;
+        $contacto->save();
+
+        return response()->json(['rpta'=>'ok']);
     }
 
     /**
@@ -62,6 +89,8 @@ class MailSMSController extends Controller
     public function edit($id)
     {
         //
+        $contacto = ContactSystem::find($id); 
+        return response()->json($contacto); 
     }
 
     /**
@@ -74,6 +103,15 @@ class MailSMSController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $contacto = ContactSystem::find($id);
+        $contacto->email = $request->email;
+        $contacto->sms = $request->sms;
+        $contacto->whatsapp = $request->whatsapp;
+        $contacto->direccion = $request->direccion;
+        $contacto->facebook = $request->facebook;
+        $contacto->save();
+
+        return response()->json(['rpta'=>'ok']);
     }
 
     /**

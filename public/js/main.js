@@ -1142,3 +1142,107 @@ $('#fr-paquete').on('submit', function (e) {
     })
 })
 
+$(".btn-mail-sms-edit").click(function(e){
+    e.preventDefault();
+    let id = $(this).data('id');
+    fetch(`/admin/contact_system/${id}/edit`)
+    .then(res => res.json())
+    .then(data =>{
+        console.log(data ); 
+        $("#fr-mail-sms #id").val(data.id);
+        $('#fr-mail-sms input[name="_method"]').val('PUT');
+        $("#fr-mail-sms #email").val(data.email);
+        $("#fr-mail-sms #sms").val(data.sms);  
+        $("#fr-mail-sms #whatsapp").val(data.whatsapp);  
+        $("#fr-mail-sms #direccion").val(data.direccion);  
+        $("#fr-mail-sms #facebook").val(data.facebook);  
+        
+    });
+
+});
+
+$('#fr-mail-sms').on('submit', function (e) {
+    e.preventDefault()
+    var id = $('#fr-mail-sms #id').val(); 
+    var metodo = $('#fr-mail-sms #metodo').val();
+    let url ='';
+    if(metodo=='POST'){ 
+        //url ='/admin/contact_system/store';
+    }else{ 
+        url = '/admin/contact_system/' + id;
+    }
+    console.log(new FormData(this));
+ 
+	$.ajaxSetup({ 
+	    headers: {'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')} 
+	});
+ 
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: new FormData(this),
+      contentType: false,
+      processData: false,
+      success: function (response) {
+          if(response.rpta=='ok'){
+            window.location.reload();
+          }
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    })
+})
+
+$(".btn-traduccion-edit").click(function(e){
+    e.preventDefault();
+    let id = $(this).data('id');
+    fetch(`/admin/traducciones/${id}/edit`)
+    .then(res => res.json())
+    .then(data =>{
+        console.log(data ); 
+        $("#fr-traduccion #id").val(data.id);
+        $('#fr-traduccion input[name="_method"]').val('PUT');
+        $("#fr-traduccion #nombre").val(data.nombre);
+        $("#fr-traduccion #traduccion").val(data.traduccion);   
+        
+    });
+
+});
+
+$('#fr-traduccion').on('submit', function (e) {
+    e.preventDefault()
+    var id = $('#fr-traduccion #id').val(); 
+    var metodo = $('#fr-traduccion #metodo').val();
+    let url ='';
+    if(metodo=='POST'){ 
+        url ='/admin/traducciones/store';
+    }else{ 
+        url = '/admin/traducciones/' + id;
+    }
+    console.log(new FormData(this));
+ 
+	$.ajaxSetup({ 
+	    headers: {'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')} 
+	});
+ 
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: new FormData(this),
+      contentType: false,
+      processData: false,
+      success: function (response) {
+          if(response.rpta=='ok'){
+            window.location.reload();
+          }
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    })
+})
+
+
+
+

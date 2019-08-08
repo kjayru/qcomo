@@ -301,7 +301,11 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/comentario-de-comensales','Admin\CommentController@index');
    
     Route::get('/analitycs','Admin\AnalitycController@index');
+ 
     Route::get('/traducciones','Admin\TranslateController@index');
+    Route::get('/traducciones/{id}/edit','Admin\TranslateController@edit'); 
+    Route::put('/traducciones/{id}','Admin\TranslateController@update')->name('traducciones.update')/*->middleware('permission:classifications.edit')*/; 
+    Route::post('/traducciones/store','Admin\TranslateController@store')->name('traducciones.store')/*->middleware('permission:classifications.create')*/; 
 
     Route::get('/getfranquiciado/{id}/edit','Admin\FranchiseController@edit');
     Route::get('/demotab','Admin\FranchiseController@demotab');
@@ -356,4 +360,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::put('/package/{classification}','Admin\PaquetesController@update')->name('packages.update')/*->middleware('permission:classifications.edit')*/; 
     Route::post('/package/store','Admin\PaquetesController@store')->name('packages.store')/*->middleware('permission:classifications.create')*/; 
 
+    Route::get('/contact_system/{id}/edit','Admin\MailSMSController@edit'); 
+    Route::put('/contact_system/{id}','Admin\MailSMSController@update')->name('packages.update')/*->middleware('permission:classifications.edit')*/; 
+    Route::post('/contact_system/store','Admin\MailSMSController@store')->name('contact_system.store')/*->middleware('permission:classifications.create')*/; 
 });

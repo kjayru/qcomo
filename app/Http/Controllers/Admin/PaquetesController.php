@@ -20,7 +20,7 @@ class PaquetesController extends Controller
      */
     public function index()
     {
-        $packages = Package::all();
+        $packages = Package::all(); 
         return view('admin.paginas.paquetes.index',['packages'=>$packages]);
     }
 
@@ -120,8 +120,7 @@ class PaquetesController extends Controller
         $client = Client::where('id',$client_id)->first();
         $client->package_id = $package_id;
         $client->save(); 
-         
-
+        
         return redirect('/admin/precios'); 
     }
 

@@ -36,7 +36,7 @@
                         <tbody >
                             @foreach($clasificaciones as $key => $clas)
                             <tr>
-                                <td >{{ $key + 1 }}</td>
+                                <td>{{ $key + 1 }}</td>
                                 <td>{{ $clas->name }}</td>
                                 <td>{{ $clas->decription }}</td>    
                                 <td class="pad-10"> <img src="/storage/{{ $clas->cover }}" class="img-responsive"></td>

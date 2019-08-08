@@ -36,7 +36,7 @@
                         <thead style="background-color: #696969; color: #fff;"><tr>
                                 <th width="40px;" style="padding-left: 15px;">Id</th>
                                 <th width="60px;" >Nombre</th>
-                                <th  >Descripcion</th>
+                                <th >Descripcion</th>
                                 <th >Precio</th>
                                 <th width="60px;">Precio Promo</th>
                                 <th width="60px;">Estado</th> 
@@ -46,9 +46,13 @@
                         <tbody > 
                             @foreach($packages as $key => $pack)
                             <tr style="height: 42px;">
-                                <td >{{ $key + 1 }}</td>
+                                <td>{{ $key + 1 }}</td>
                                 <td>{{ $pack->name }}</td>
-                                <td>{{ $pack->description }}</td>
+                                <td>
+                                    @foreach($pack->packageSystemServices as $key2 => $pss)
+                                        <p>* {{$pss->system_service->nombre}}</p>
+                                    @endforeach
+                                </td>
                                 <td>{{ $pack->price }}</td>
                                 <td>{{ $pack->promo }}</td>
                                 <td>{{ $pack->status }}</td>

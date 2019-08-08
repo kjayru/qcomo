@@ -10,4 +10,9 @@ class Package extends Model
     {
         return $this->hasOne('App\PackageDetail');
     }
+
+    public function packageSystemServices()
+    {
+        return $this->hasMany('App\PackageSystemService');
+    }
 }
