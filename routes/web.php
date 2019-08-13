@@ -363,4 +363,14 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/contact_system/{id}/edit','Admin\MailSMSController@edit'); 
     Route::put('/contact_system/{id}','Admin\MailSMSController@update')->name('packages.update')/*->middleware('permission:classifications.edit')*/; 
     Route::post('/contact_system/store','Admin\MailSMSController@store')->name('contact_system.store')/*->middleware('permission:classifications.create')*/; 
+
+    Route::post('/payment','Admin\UserController@payment');
+        
+    Route::get('/status/success','Admin\DashboardController@success')->name('backend.success');
+    Route::get('/status/failure','Admin\DashboardController@failure')->name('backend.failure');
+    Route::get('/status/pending','Admin\DashboardController@pending')->name('backend.pending');
+    Route::get('/status/exitoso','Admin\DashboardController@exitoso')->name('backend.exitoso');
+    Route::get('/status/fallo','Admin\DashboardController@fallo')->name('backend.fallo');
+
+
 });

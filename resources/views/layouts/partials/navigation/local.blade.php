@@ -2,7 +2,7 @@
               
         <li>
         <a href="/admin/">
-          <i class="fa fa-dashboard"></i> <span class="span_li">Cuadro de comandos</span>               
+          <i class="fa fa-dashboard"></i> <span class="span_li">Cuadro de comandos - Local</span>               
         </a> 
       </li>  
       
@@ -20,6 +20,12 @@
       <li>
         <a href="/admin/reservas">
           <img src="/dist/img/icon_reservation.png" width="15px" style="margin: 0px 7px 0px 0px;"/> <span class="span_li">Reservas</span>               
+        </a>
+      </li> 
+
+      <li {{{ (Request::is('admin/miposicionpuntos') ? 'class=active' : '') }}}>
+        <a href="/admin/miposicionpuntos">
+          <i class="fa fa-table"></i> <span class="span_li">Mi Posicion - Puntos</span>               
         </a>
       </li> 
      

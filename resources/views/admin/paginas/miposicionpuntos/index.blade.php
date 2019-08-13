@@ -232,10 +232,100 @@
 </div>
      
 </section>
+
+
+<div class="modal fade" id="TargetModal" tabindex="-1" role="dialog" aria-labelledby="TargetModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="/admin/payment" method="post" id="pay" name="pay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TargetModalLabel">Tarjeta debito o Credito</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                        @csrf
+
+                            <div class="form-group">
+                                <label for="cardNumber">
+                                    NÚMERO DE TARJETA</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="cardNumber"   data-checkout="cardNumber"  onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7 col-md-7">
+                                    <div class="form-group">
+                                        <label for="expityMonth">
+                                            FECHA DE CADUCIDAD</label>
+
+                                        <div class="row">
+                                            <div class="col-xs-6 col-lg-6 pl-ziro">
+                                                <input type="text" class="form-control"  id="cardExpirationMonth" data-checkout="cardExpirationMonth" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off placeholder="MM" required />
+                                            </div>
+                                            <div class="col-xs-6 col-lg-6 pl-ziro">
+                                                <input type="text" class="form-control"  id="cardExpirationYear" data-checkout="cardExpirationYear"  onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off placeholder="YYYY" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-5 col-md-5 pull-right">
+                                    <div class="form-group">
+                                        <label for="cvCode">
+                                            CÓDIGO CV</label>
+                                        <input type="text" class="form-control" id="securityCode" data-checkout="securityCode"  onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off  required />
+                                    </div>
+                                </div>
+
+                            <div class="row">
+                                    <div class="col-xs-6 col-lg-6 pl-ziro">
+                                        <label for="docType">Tipo de documento:</label>
+                                        <select id="docType" class="form-control" data-checkout="docType"></select>
+                                    </div>
+                                    <div class="col-xs-6 col-lg-6 pl-ziro">
+                                        <label for="docNumber">Número documento:</label>
+                                        <input type="text" class="form-control" id="docNumber" data-checkout="docNumber" placeholder="12345678" />
+                                    </div>
+
+                            </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cardNumber">
+                                    Nombre Titular de Tarjeta</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="cardholderName" data-checkout="cardholderName" />
+                                </div>
+                            </div>
+                    <input type="hidden" name="paymentMethodId" value="" />
+                    <input type="hidden" name="transaction_amount">
+                    <input type="hidden" name="description" value="">
+                    <input type="hidden" name="project_id" value="">
+                    <input type="hidden" name="user_id" value="{{ $user_id }}">
+                    <input type="hidden" name="anonimo" value=""> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-procesa-pago-cart">Enviar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 @include('admin.partial.scripts')
-      
+     
+<script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>  
 <script>  
     
+Mercadopago.setPublishableKey('{{ env('MP_APP_PUBLIC')}}');
+Mercadopago.getIdentificationTypes();
+
     var puntajes = [];
     
     $(document).ready(function(){         
@@ -520,7 +610,9 @@
     }
 
     function comprarPuntos(){
-        var puntos_comprar = prompt("Ingrese la cantidad de puntos a comprar", "0");
+
+        $("#TargetModal").modal('show');
+        /*var puntos_comprar = prompt("Ingrese la cantidad de puntos a comprar", "0");
 
         if (puntos_comprar == 0 || puntos_comprar == "") {
             alert('cancelado');
@@ -531,10 +623,7 @@
             type:'POST',
             url:"/admin/client_point",
             data:{  _token:_token, 
-            id: <?php 
-                    if($curr_client!= []) echo $curr_client->id;
-                    else echo "-1";
-                ?>, 
+            id: {{ $user_id }}, 
             puntos: puntos_comprar },
             success:function(data){
                     if(data.rpta === 'ok'){    
@@ -545,7 +634,10 @@
                 }
             }); 
 
-        }
+        }*/
+
+
+
     }
 
     function probarPuntos()
@@ -727,6 +819,102 @@
     }
     
     
+///methods mercadopago
+
+$(".btn-procesa-pago-cart").on('click',function(e){
+	e.preventDefault();
+
+	var $form = document.querySelector('#pay');
+	Mercadopago.createToken($form, sdkResponseHandler);
+});
+
+
+
+
+function guessingPaymentMethod(event) {
+    var bin = getBin();
+	console.log("BIN "+bin);
+    if (event.type == "keyup") {
+        if (bin.length >= 6) {
+            Mercadopago.getPaymentMethod({
+                "bin": bin
+            }, setPaymentMethodInfo);
+        }
+    } else {
+        setTimeout(function() {
+            if (bin.length >= 6) {
+                Mercadopago.getPaymentMethod({
+                    "bin": bin
+                }, setPaymentMethodInfo);
+            }
+        }, 100);
+    }
+};
+
+
+
+function setPaymentMethodInfo(status, response) {
+	
+		if (status == 200) {
+
+				if (document.querySelector("input[name=paymentMethodId]") == null) {
+					var paymentMethod = document.createElement('input');
+					paymentMethod.setAttribute('name', "paymentMethodId");
+					paymentMethod.setAttribute('type', "hidden");
+					paymentMethod.setAttribute('value', response[0].id);
+
+					form.appendChild(paymentMethod);
+				} else {
+					document.querySelector("input[name=paymentMethodId]").value = response[0].id;
+				}
+				$("#tipocard").html(response[0].id);
+		}	
+}
+
+
+function getBin() {
+	console.log("GETBIN");
+	var ccNumber = document.querySelector('input[data-checkout="cardNumber"]');
+	
+	return ccNumber.value.replace(/[ .-]/g, '').slice(0, 6);
+};
+
+
+function addEvent(el, eventName, handler){
+	if(el){	
+		if(el.addEventListener){
+			el.addEventListener(eventName, handler);
+		}else{
+			el.attachEvent('on' + eventName, function(){
+				handler.call(el);
+			});
+		}
+	}
+};
+
+
+addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'keyup', guessingPaymentMethod);
+addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'change', guessingPaymentMethod);
+
+
+function sdkResponseHandler(status, response) {
+	console.log("sdkresponse: "+status);
+	console.table(response);
+
+	if (status != 200 && status != 201) {
+			alert("verify filled data");
+	}else{
+			var form = document.querySelector('#pay');
+			var card = document.createElement('input');
+			card.setAttribute('name', 'token');
+			card.setAttribute('type', 'hidden');
+			card.setAttribute('value', response.id);
+			form.appendChild(card);
+			doSubmit=true;
+			form.submit();
+	}
+
+};
 </script>
  
 @endsection

@@ -15,7 +15,7 @@ class AddPointsToBuyedClientpoints extends Migration
     {
         Schema::table('buyed_clientpoints', function (Blueprint $table) {
             //
-            $table->int('points');
+            $table->integer('points');
         });
     }
 
