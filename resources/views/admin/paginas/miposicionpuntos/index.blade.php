@@ -302,7 +302,7 @@
                                 </div>
                             </div>
                     <input type="hidden" name="paymentMethodId" value="" />
-                    <input type="hidden" name="transaction_amount">
+                    <input type="hidden" name="transaction_amount" value="20">
                     <input type="hidden" name="description" value="Pago por puntos">
                     <input type="hidden" name="project_id" value="">
                     <input type="hidden" name="user_id" value="{{ $user_id }}">
