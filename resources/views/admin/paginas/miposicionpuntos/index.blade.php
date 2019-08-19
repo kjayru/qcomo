@@ -247,6 +247,14 @@
                 <div class="modal-body">
                     
                         @csrf
+                        <div class="form-group">
+                            <label for="cardNumber">
+                               MONTO SOLES</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="transaction_amount"   data-checkout="transaction_amount"  onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            </div>
+                        </div>
 
                             <div class="form-group">
                                 <label for="cardNumber">
@@ -301,8 +309,8 @@
                                     <input type="text" class="form-control" id="cardholderName" data-checkout="cardholderName" />
                                 </div>
                             </div>
-                    <input type="hidden" name="paymentMethodId" value="credit_card" />
-                    <input type="hidden" name="transaction_amount" value="20">
+                    <input type="hidden" name="paymentMethodId" value="" />
+                    
                     <input type="hidden" name="description" value="Pago por puntos">
                     <input type="hidden" name="project_id" value="">
                     <input type="hidden" name="user_id" value="{{ $user_id }}">
