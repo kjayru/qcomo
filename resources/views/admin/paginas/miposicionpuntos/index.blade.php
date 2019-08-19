@@ -301,12 +301,15 @@
                                     <input type="text" class="form-control" id="cardholderName" data-checkout="cardholderName" />
                                 </div>
                             </div>
-                    <input type="hidden" name="paymentMethodId" value="" />
+                    <input type="hidden" name="paymentMethodId" value="credit_card" />
                     <input type="hidden" name="transaction_amount" value="20">
                     <input type="hidden" name="description" value="Pago por puntos">
                     <input type="hidden" name="project_id" value="">
                     <input type="hidden" name="user_id" value="{{ $user_id }}">
                     <input type="hidden" name="anonimo" value=""> 
+                    <div class="row">
+                        <div id="tipocard"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -320,11 +323,139 @@
 
 @include('admin.partial.scripts')
      
+    
 <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>  
 <script>  
-    
-Mercadopago.setPublishableKey("{{env('MP_APP_PUBLIC')}}");
+
+Mercadopago.setPublishableKey("TEST-8c0d70f2-cee2-47c6-b2cf-c13bb129bdbb");
 Mercadopago.getIdentificationTypes();
+
+
+    
+///methods mercadopago
+
+$(".btn-procesa-pago-cart").on('click',function(e){
+	e.preventDefault();
+
+	var $form = document.querySelector('#pay');
+	Mercadopago.createToken($form, sdkResponseHandler);
+});
+
+
+
+
+function guessingPaymentMethod(event) {
+    var bin = getBin();
+	console.log("BIN "+bin);
+    if (event.type == "keyup") {
+        if (bin.length >= 6) {
+
+            console.log("keup mayor 6")
+            Mercadopago.getPaymentMethod({
+                "bin": bin
+            }, setPaymentMethodInfo);
+        }
+    } else {
+        setTimeout(function() {
+            if (bin.length >= 6) {
+                console.log("not mayor 6")
+                Mercadopago.getPaymentMethod({
+                    "bin": bin
+                }, setPaymentMethodInfo);
+            }
+        }, 100);
+    }
+};
+
+
+
+function setPaymentMethodInfo(status, response) {
+
+
+/*
+    if (status == 200) {
+        const paymentMethodElement = document.querySelector('input[name=paymentMethodId]');
+
+        if (paymentMethodElement) {
+            paymentMethodElement.value = response[0].id;
+        } else {
+            const input = document.createElement('input');
+            input.setattribute('name', 'paymentMethodId');
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('value', response[0].id);     
+
+            form.appendChild(input);
+        }
+    } else {
+        alert(`payment method info error: ${response}`);  
+    }*/
+
+
+    
+    console.log(response);
+		if (status == 200) {
+
+				if (document.querySelector("input[name=paymentMethodId]") == null) {
+					var paymentMethod = document.createElement('input');
+					paymentMethod.setAttribute('name', "paymentMethodId");
+					paymentMethod.setAttribute('type', "hidden");
+					paymentMethod.setAttribute('value', response[0].id);
+
+					form.appendChild(paymentMethod);
+				} else {
+					document.querySelector("input[name=paymentMethodId]").value = response[0].id;
+				}
+				$("#tipocard").html(`<img src="${response[0].secure_thumbnail}">`);
+		}
+}
+
+
+function getBin() {
+	
+	var ccNumber = document.querySelector('input[data-checkout="cardNumber"]');
+	
+	return ccNumber.value.replace(/[ .-]/g, '').slice(0, 6);
+};
+
+
+function addEvent(el, eventName, handler){
+	if(el){	
+		if(el.addEventListener){
+			el.addEventListener(eventName, handler);
+		}else{
+			el.attachEvent('on' + eventName, function(){
+				handler.call(el);
+			});
+		}
+	}
+};
+
+
+addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'keyup', guessingPaymentMethod);
+addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'change', guessingPaymentMethod);
+
+
+function sdkResponseHandler(status, response) {
+
+	
+	if (status != 200 && status != 201) {
+			alert("verify filled data");
+	}else{
+			var form = document.querySelector('#pay');
+			var card = document.createElement('input');
+			card.setAttribute('name', 'token');
+			card.setAttribute('type', 'hidden');
+			card.setAttribute('value', response.id);
+			form.appendChild(card);
+            doSubmit=true;
+            
+            form.submit();
+            console.log("responseee "+response);
+	}
+
+};
+
+
 
     var puntajes = [];
     
@@ -818,103 +949,7 @@ Mercadopago.getIdentificationTypes();
         content_leftpanel.appendChild(div1); 
     }
     
-    
-///methods mercadopago
 
-$(".btn-procesa-pago-cart").on('click',function(e){
-	e.preventDefault();
-
-	var $form = document.querySelector('#pay');
-	Mercadopago.createToken($form, sdkResponseHandler);
-});
-
-
-
-
-function guessingPaymentMethod(event) {
-    var bin = getBin();
-	console.log("BIN "+bin);
-    if (event.type == "keyup") {
-        if (bin.length >= 6) {
-            Mercadopago.getPaymentMethod({
-                "bin": bin
-            }, setPaymentMethodInfo);
-        }
-    } else {
-        setTimeout(function() {
-            if (bin.length >= 6) {
-                Mercadopago.getPaymentMethod({
-                    "bin": bin
-                }, setPaymentMethodInfo);
-            }
-        }, 100);
-    }
-};
-
-
-
-function setPaymentMethodInfo(status, response) {
-	
-		if (status == 200) {
-
-				if (document.querySelector("input[name=paymentMethodId]") == null) {
-					var paymentMethod = document.createElement('input');
-					paymentMethod.setAttribute('name', "paymentMethodId");
-					paymentMethod.setAttribute('type', "hidden");
-					paymentMethod.setAttribute('value', response[0].id);
-
-					form.appendChild(paymentMethod);
-				} else {
-					document.querySelector("input[name=paymentMethodId]").value = response[0].id;
-				}
-				$("#tipocard").html(response[0].id);
-		}	
-}
-
-
-function getBin() {
-	console.log("GETBIN");
-	var ccNumber = document.querySelector('input[data-checkout="cardNumber"]');
-	
-	return ccNumber.value.replace(/[ .-]/g, '').slice(0, 6);
-};
-
-
-function addEvent(el, eventName, handler){
-	if(el){	
-		if(el.addEventListener){
-			el.addEventListener(eventName, handler);
-		}else{
-			el.attachEvent('on' + eventName, function(){
-				handler.call(el);
-			});
-		}
-	}
-};
-
-
-addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'keyup', guessingPaymentMethod);
-addEvent(document.querySelector('input[data-checkout="cardNumber"]'), 'change', guessingPaymentMethod);
-
-
-function sdkResponseHandler(status, response) {
-	console.log("sdkresponse: "+status);
-	console.table(response);
-
-	if (status != 200 && status != 201) {
-			alert("verify filled data");
-	}else{
-			var form = document.querySelector('#pay');
-			var card = document.createElement('input');
-			card.setAttribute('name', 'token');
-			card.setAttribute('type', 'hidden');
-			card.setAttribute('value', response.id);
-			form.appendChild(card);
-			doSubmit=true;
-			form.submit();
-	}
-
-};
 </script>
  
 @endsection

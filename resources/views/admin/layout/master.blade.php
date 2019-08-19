@@ -90,7 +90,7 @@
  
     @include('admin.partial.footer')
 <script src="//maps.googleapis.com/maps/api/js?key={{env("GOOGLE_API_KEY")}}"></script>
-<script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>  
+ 
 <script src="/js/main.js?v={{ uniqid() }}"></script>
 </div>
 </body>

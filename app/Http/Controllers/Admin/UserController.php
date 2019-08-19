@@ -35,7 +35,7 @@ class UserController extends Controller
 
 
     public function payment(Request $request){
-      
+        
         \MercadoPago\SDK::setAccessToken(env('ACCESS_TOKEN'));
        
         $payment = new MercadoPago\Payment();
@@ -52,7 +52,7 @@ class UserController extends Controller
         // Save and posting the payment
         $payment->save();
 
-        dd($payment);
+       // dd($payment);
             if($payment->status=='approved'){
                /* $pago = new ProjectInvestor();
 
